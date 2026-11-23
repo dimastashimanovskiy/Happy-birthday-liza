@@ -14,7 +14,6 @@
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{background:var(--blush);color:var(--ink);font:400 1rem/1.6 Manrope,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-/* плёночное зерно поверх всего */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.08;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
 button{font:inherit;cursor:pointer;border:0;color:inherit;background:none;min-height:48px;min-width:48px}
 h1,h2,h3,.big{font-family:'Yeseva One',serif;font-weight:400;line-height:1.08;text-wrap:balance}
@@ -25,7 +24,7 @@ h2::after{content:'';display:block;height:8px;width:90px;margin:10px auto 22px;b
 .btn:active{transform:scale(.95)}
 .ghost{background:#ffffff1a;box-shadow:none;border:1px solid #ffffff44}
 .s,.panel,.fin,#cake{text-align:center}
-.s{padding:72px 24px;max-width:640px;margin:0 auto}
+.s{padding:72px 24px;max-width:640px;margin:0 auto;overflow-x:clip}
 .small{font-size:.85rem;opacity:.65;margin-top:10px}
 .hw{font:700 1.7rem/1.2 Caveat,cursive}
 @keyframes pop{from{opacity:0;transform:translateY(36px) scale(.94)}}
@@ -49,7 +48,7 @@ h2::after{content:'';display:block;height:8px;width:90px;margin:10px auto 22px;b
 #stat{min-height:3.2em;color:#e9d3f7;font-weight:600}
 
 /* СЧЁТЧИК */
-.big{display:block;margin:8px auto 0;font-size:clamp(4.5rem,26vw,8.5rem);color:var(--cherry);line-height:1;min-height:0}
+.big{display:block;margin:8px auto 0;font-size:clamp(2.6rem,14vw,8.5rem);color:var(--cherry);line-height:1;min-height:0;max-width:100%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
 #du{font:1.6rem 'Yeseva One',serif}
 #ymd{font-weight:600;margin-top:10px}
 #hms{font-variant-numeric:tabular-nums;opacity:.8}
@@ -119,7 +118,7 @@ h2::after{content:'';display:block;height:8px;width:90px;margin:10px auto 22px;b
 
 /* ВОПРОС */
 .qa{position:relative;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;align-content:flex-start;min-height:150px;margin-top:22px}
-.nope{background:#fff;color:var(--ink);box-shadow:0 4px 14px #2a103022;transition:left .25s var(--e),top .25s var(--e)}
+.nope{background:#fff;color:var(--ink);box-shadow:0 4px 14px #2a103022}
 
 /* ФИНАЛ */
 .fin{background:var(--cherry);color:#fff;padding:96px 24px 120px;margin-top:64px;border-radius:48px 48px 0 0}
@@ -149,7 +148,6 @@ figcaption{font:700 1.4rem/1.2 Caveat,cursive;padding-top:10px}
 
 <section id="cake">
   <h1>С днём рождения,<br><em>Лиза</em></h1>
-  <!-- СВЕЧИ-ЦИФРЫ: меняй числа 2 и 4 в тегах <text>, если возраст другой -->
   <svg id="cakesvg" viewBox="0 0 320 300" role="img" aria-label="Торт со свечами 2 и 4">
     <defs>
       <radialGradient id="gl"><stop offset="0" stop-color="#ffc66e" stop-opacity=".5"/><stop offset="1" stop-color="#ffc66e" stop-opacity="0"/></radialGradient>
@@ -269,22 +267,20 @@ figcaption{font:700 1.4rem/1.2 Caveat,cursive;padding-top:10px}
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
 /* ===== НАСТРОЙКИ: меняй здесь ===== */
-const START=new Date('2024-09-09T00:00:00');   // дата начала отношений
-const FIXED_NOW=null;                          // заморозить счётчик: new Date('2026-11-21T20:00:00')
-const AUDIO='guitar.mp3';         // песня на гитаре
-const CARD_PHOTO=3;                            // какое фото на коллекционной карте (номер с нуля)
-// фото: d — дата, cap — подпись
+const START=new Date('2024-09-09T00:00:00');
+const FIXED_NOW=null;
+const AUDIO='assets/audio/guitar.mp3';
+const CARD_PHOTO=3;
 const PHOTOS=[
- {src:'IMG_20240910_232318_093.jpg',d:'10 сентября 2024',cap:'второй день вместе'},
- {src:'Picsart_25-05-20_23-08-32-079.jpg',d:'май 2025',cap:'смотрю только на тебя'},
- {src:'Picsart_25-06-24_20-13-41-795.jpg',d:'июнь 2025',cap:'колесо обозрения, ты и я'},
- {src:'20250627_221351.jpg',d:'июнь 2025',cap:'твой смех лучше каруселей'},
- {src:'20250624_203519.jpg',d:'июнь 2025',cap:'один взгляд — и всё ясно'}];
-const SP=[[14,70],[30,28],[52,62],[72,24],[88,58]];   // позиции звёзд в %
+ {src:'assets/photos/photo1.jpg',d:'10 сентября 2024',cap:'второй день вместе'},
+ {src:'assets/photos/photo2.jpg',d:'май 2025',cap:'смотрю только на тебя'},
+ {src:'assets/photos/photo3.jpg',d:'июнь 2025',cap:'колесо обозрения, ты и я'},
+ {src:'assets/photos/photo4.jpg',d:'июнь 2025',cap:'твой смех лучше каруселей'},
+ {src:'assets/photos/photo5.jpg',d:'июнь 2025',cap:'один взгляд — и всё ясно'}];
+const SP=[[14,70],[30,28],[52,62],[72,24],[88,58]];
 const STATS=[['Улыбка',100],['Красота',100],['Уют',100],['Терпение к Диме',99]];
 const BAL=['Ты умеешь превращать обычный день в особенный ✨','Вечер кино: ты выбираешь фильм, я делаю попкорн 🍿','Твой смех — мой любимый звук на свете 😊','Кофе в парке, когда захочешь. Просто скажи ☕','Рядом с тобой я становлюсь лучше 💫','Обнимашки по первому требованию, без лимита 🤗','Ты красивая, даже когда только проснулась 🌷','Песня на гитаре. Та самая. Она чуть ниже ↓ 🎸'];
 const SECRET='Ты нашла секрет! 🥰\nЕсли ты это читаешь, значит, кликнула по сердечку 5 раз.\nЗнай: я люблю тебя больше, чем могу сказать словами. И даже больше, чем показываю.\nС днём рождения, моя Лизочка.';
-// ТЕКСТ ПИСЬМА (числа считаются сами)
 const letter=(n,t)=>`Лизочка,\n\n${n} назад, 9 сентября, моя жизнь стала в разы светлее. Сегодня это уже ${t}, а мне всё мало.\n\nСпасибо за каждый день, за твоё терпение, за смех, от которого хочется улыбаться даже в плохой день, и просто за то, что ты есть.\n\nПрогулки в парке, кофе на ходу, колесо обозрения и самые обычные вечера рядом с тобой: это лучшее, что у меня есть.\n\nТы — самое лучшее, что со мной случилось. Рядом с тобой я становлюсь лучше.\n\nС днём рождения, любимая. Пусть этот год будет к тебе так же добр, как ты ко мне. А я постараюсь быть рядом в каждом его дне.\n\nТвой Дима ❤️`;
 
 const $=s=>document.querySelector(s);
@@ -293,7 +289,7 @@ const pl=(n,f)=>n%10==1&&n%100!=11?f[0]:n%10>1&&n%10<5&&(n%100<10||n%100>20)?f[1
 const YF=['год','года','лет'],MF=['месяц','месяца','месяцев'],DF=['день','дня','дней'];
 const party=()=>{boom();boom({angle:60,origin:{x:0,y:.7}});boom({angle:120,origin:{x:1,y:.7}})};
 
-/* музыкальная шкатулка (Web Audio, без файлов) */
+/* музыкальная шкатулка (Web Audio) */
 let AC;const getAC=()=>{AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();return AC};
 const HB=[[392,.75],[392,.25],[440,1],[392,1],[523,1],[494,2],[392,.75],[392,.25],[440,1],[392,1],[587,1],[523,2],[392,.75],[392,.25],[784,1],[659,1],[523,1],[494,1],[440,1],[698,.75],[698,.25],[659,1],[523,1],[587,1],[523,2]];
 function tone(f,t,d,v){const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d)}
@@ -326,21 +322,32 @@ function finale(){
   requestAnimationFrame(()=>{m.classList.add('in');setTimeout(()=>m.scrollIntoView({behavior:'smooth'}),500)});
  },3400);
 }
+
+/* МИКРОФОН — исправлен: ниже порог, быстрее накопление */
 $('#mic').onclick=async()=>{
  try{
   const st=await navigator.mediaDevices.getUserMedia({audio:true});
-  const ac=getAC(),an=ac.createAnalyser();an.fftSize=512;ac.createMediaStreamSource(st).connect(an);
-  const d=new Uint8Array(an.fftSize);let acc=0;
+  const ac=getAC(),an=ac.createAnalyser();
+  an.fftSize=512;an.smoothingTimeConstant=.6;
+  ac.createMediaStreamSource(st).connect(an);
+  const d=new Uint8Array(an.fftSize);
+  let acc=0;
   $('#mic').textContent='🎤 Слушаю… дуй!';
   (function t(){
    if(over){st.getTracks().forEach(x=>x.stop());return}
-   an.getByteTimeDomainData(d);let s=0;for(const v of d){const x=(v-128)/128;s+=x*x}
-   const r=Math.sqrt(s/d.length);svg.style.setProperty('--lean',Math.min(r*150,26));
-   acc=r>.12?acc+1:Math.max(0,acc-1);
-   if(acc>18){acc=0;out(lit[0]?0:1)}
+   an.getByteTimeDomainData(d);
+   let s=0;
+   for(const v of d){const x=(v-128)/128;s+=x*x}
+   const r=Math.sqrt(s/d.length);
+   svg.style.setProperty('--lean',Math.min(r*400,30));
+   if(r>0.06)acc+=2;else acc=Math.max(0,acc-1.5);
+   if(acc>14){acc=0;out(lit[0]?0:1)}
    requestAnimationFrame(t);
   })();
- }catch(e){stat.textContent='Микрофон не включился. Просто коснись пламени 👆';$('#mic').hidden=true}
+ }catch(e){
+  stat.textContent='Микрофон не включился. Просто коснись пламени 👆';
+  $('#mic').hidden=true;
+ }
 };
 
 /* счётчик */
@@ -362,7 +369,7 @@ function tick(){
 $('#dd').onclick=()=>{cm=(cm+1)%4;tick()};
 tick();setInterval(tick,1000);
 
-/* коллекционная карта: блик следует за пальцем и наклоном телефона */
+/* коллекционная карта */
 $('#cimg').src=PHOTOS[CARD_PHOTO].src;
 $('#ci').innerHTML=`<h3>ЛИЗА</h3><div>24 уровень · легендарная</div>`+STATS.map(s=>`<div class="sr"><span>${s[0]}</span><i style="--v:${s[1]}%"></i></div>`).join('')+`<div style="margin-top:6px">Способность: смех лечит любой плохой день</div><div>Слабость: объятия Димы</div>`;
 const cin=$('#cin'),cl=v=>Math.max(-1,Math.min(1,v));
@@ -372,14 +379,24 @@ $('#card').onpointerleave=()=>tilt(0,0);
 $('#card').onclick=()=>{for(const E of[window.DeviceOrientationEvent,window.DeviceMotionEvent])E&&E.requestPermission&&E.requestPermission().catch(()=>{})};
 addEventListener('deviceorientation',e=>{if(e.gamma!=null)tilt(e.gamma/30,(e.beta-50)/30)});
 
-/* созвездие воспоминаний */
+/* ПРЕДЗАГРУЗКА ФОТО */
+const preloaded=PHOTOS.map(p=>{const im=new Image();im.src=p.src;im.decode?.().catch(()=>{});return im});
+
+/* СОЗВЕЗДИЕ — исправлено: фото грузится до показа */
 let k=0;const sky=$('#sky');
 PHOTOS.forEach((p,i)=>{
- const s=document.createElement('button');s.className='st'+(i?'':' next');s.textContent='✦';
- s.style.left=SP[i][0]+'%';s.style.top=SP[i][1]+'%';s.setAttribute('aria-label','Воспоминание '+(i+1));
- s.onclick=()=>{
+ const s=document.createElement('button');
+ s.className='st'+(i?'':' next');s.textContent='✦';
+ s.style.left=SP[i][0]+'%';s.style.top=SP[i][1]+'%';
+ s.setAttribute('aria-label','Воспоминание '+(i+1));
+ s.onclick=async()=>{
   if(i>k){$('#sn').textContent='Сначала предыдущую звёздочку 😉';return}
-  $('#lb img').src=p.src;$('#lb img').alt=p.cap;$('#lc').textContent=p.d+' · '+p.cap;$('#lb').classList.add('on');
+  const img=$('#lb img');
+  img.src=p.src;
+  try{await img.decode()}catch(e){}
+  img.alt=p.cap;
+  $('#lc').textContent=p.d+' · '+p.cap;
+  $('#lb').classList.add('on');
   if(i==k){
    k++;s.className='st on';$('#sn').textContent='';
    $('#ln').setAttribute('points',SP.slice(0,k).map(q=>q.join(',')).join(' '));
@@ -417,7 +434,7 @@ $('#env').onclick=function(){
  },800);
 };
 
-/* пульс: зажми сердце, телефон вибрирует как сердцебиение */
+/* пульс */
 let pt,bp=70;const ph=$('#pulse');
 const stopP=()=>{clearInterval(pt);ph.classList.remove('beat')};
 ph.onpointerdown=()=>{
@@ -429,7 +446,7 @@ ph.onpointerdown=()=>{
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>ph.addEventListener(ev,stopP));
 ph.oncontextmenu=e=>e.preventDefault();
 
-/* фонарики с желанием */
+/* фонарики */
 function lantern(){
  const v=$('#wi').value.trim();if(!v)return $('#wi').focus();
  const l=document.createElement('div');l.className='lt';l.style.left=(10+Math.random()*60)+'%';
@@ -449,20 +466,18 @@ au.ontimeupdate=()=>$('#seek').value=au.duration?au.currentTime/au.duration*1000
 $('#seek').oninput=e=>{if(au.duration)au.currentTime=e.target.value/1000*au.duration};
 au.onerror=()=>$('#amsg').textContent='Песня скоро появится 🎸';
 
-/* вопрос: кнопка «Нет» убегает */
-let dodge=0;const qa=$('#qa'),no=$('#no');
-function yes(){$('#qr').textContent='Я так и знал 💖 Люблю тебя';$('#yes').disabled=no.disabled=true;party();bday()}
+/* ВОПРОС — кнопка «Нет» больше не убегает */
+function yes(){
+ $('#qr').textContent='Я так и знал 💖 Люблю тебя';
+ $('#yes').disabled=$('#no').disabled=true;
+ party();bday();
+}
 $('#yes').onclick=yes;
-no.onpointerdown=e=>{
- if(dodge>=6)return;e.preventDefault();dodge++;
- no.style.position='absolute';
- no.style.left=Math.random()*(qa.clientWidth-no.offsetWidth)+'px';
- no.style.top=Math.random()*(qa.clientHeight-no.offsetHeight)+'px';
- if(dodge==6)no.textContent='Ладно, да 😅';
+$('#no').onclick=()=>{
+ $('#qr').textContent='Неверный ответ, попробуй ещё раз 😄';
 };
-no.onclick=()=>{if(dodge>=6)yes()};
 
-/* финал, шкатулка, встряска, сердечки по тапу, пасхалка */
+/* финал, шкатулка, встряска, сердечки, пасхалка */
 $('#more').onclick=party;
 $('#note').onclick=bday;
 let lm=0,ls=0;
